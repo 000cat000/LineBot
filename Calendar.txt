@@ -1,0 +1,109 @@
+function getFormResponse() {  
+  //由表單 Id 開啟表單
+  var form = FormApp.openById("XXXXXX");
+   
+  //取得表單名稱
+  var formTitle = form.getTitle();
+   
+  //取得表單回覆內容
+  var formResponse = form.getResponses();
+    
+   
+  //處理表單上問答內容
+  for(var i = 0; i < formResponse.length ; i++){
+     
+    //取得表單上的項目
+    var itemResponses = formResponse[i].getItemResponses();
+     
+    //取得表單上「收集電子郵件地址」
+    var itemRespondentEmail = formResponse[i].getRespondentEmail();
+    //Logger.log(itemRespondentEmail);
+     
+    //傳送訊息設定
+    var itemContext = formTitle + "\n 填報者電子郵件 : " + itemRespondentEmail + "\n";
+     
+    //傳給日曆變數
+    var calendar = [];
+     
+    //將表單每一項問答組成訊息
+    for(var j = 0; j < itemResponses.length ; j++)
+    {
+        
+      if(itemResponses[j].getItem().getTitle() == "見面地點"){
+        calendar['title'] = itemResponses[j].getResponse();
+      } 
+      if(itemResponses[j].getItem().getTitle() == "見面日期"){
+        calendar['date'] = itemResponses[j].getResponse();
+      }
+      if(itemResponses[j].getItem().getTitle() == "需要金額"){
+        calendar['amount'] = itemResponses[j].getResponse();
+      }
+      if(itemResponses[j].getItem().getTitle() == "其他"){
+        calendar['ps'] = itemResponses[j].getResponse();
+      }
+       
+       
+      //取得問題標題
+      itemContext += itemResponses[j].getItem().getTitle();    
+       
+      //取得問題回覆內容
+      itemContext += " : " + itemResponses[j].getResponse() + "\n";
+    }    
+     
+    //取得填寫表單時間
+    itemContext += "\n填寫時間 : " + formResponse[i].getTimestamp() + "\n\n";
+     
+    //送出表單到Line
+    sendToLine(itemContext);
+    //寫入日曆
+    setCalendar(calendar);
+  }
+   
+  //刪除回應問題
+  form.deleteAllResponses();
+}
+ 
+function sendToLine(message){
+  //填入Line Notify 權杖
+  var token = "XXXXXX";
+   
+  var options =
+  {
+      method  : "post",
+      payload : "message=" + message,
+      headers : {"Authorization" : "Bearer "+ token},
+      muteHttpExceptions : true
+  };  
+ 
+  UrlFetchApp.fetch("https://notify-api.line.me/api/notify",options);
+}
+ 
+ 
+function setCalendar(calendar) {
+  //日曆ID
+  var calId = "XXXXXX";    
+   
+  //設定新增的行程標題
+  var title = calendar['ps'] ? calendar['title'] + "-" + calendar['ps'] : calendar['title'];
+    
+  //開始時間
+  var startDate = calendar['date'];
+  startDate = new Date(startDate.replace(/-/g, "/"));//轉換日期格式    
+   
+  //顏色
+  var color = 11;
+   
+  //----------------------//
+   
+  //透過ID取得日曆
+  var cal = CalendarApp.getCalendarById(calId);
+   
+  //建立新的日曆行程
+  var even = cal.createAllDayEvent(title + ": " + calendar['amount'], date);
+ 
+  //設定形成顏色
+  even.setColor(color);
+   
+  //取得形成的ID
+  //Logger.log(even.getId());
+}
