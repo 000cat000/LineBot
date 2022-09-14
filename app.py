@@ -1,3 +1,7 @@
+from linebot import LineBotApi, WebhookHandler
+from linebot.models import TextSendMessage, StickerSendMessage, ImageSendMessage, LocationSendMessage
+import requests, statistics, json, time
+from cgi import test
 from flask import Flask, request, abort
 
 from linebot import (LineBotApi, WebhookHandler)
@@ -21,10 +25,9 @@ import json
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
 # Channel Access Token
-line_bot_api = LineBotApi('BAyDRggU9nan1LtebdW+wSh5HiNm1SMuhEtZmBThjPOdoDrfBaKWbd5rOWnsAMUdWkegE9IDLYv5xnbaRXnqV5VRbA0NMDz6dS+pztosDgqp6mqLCduIzbCcbh3EgpCaYkea6BN3xJmkSn/Y9H7Q4wdB04t89/1O/w1cDnyilFU=')
-
+line_bot_api = LineBotApi('E2q3tt9gvK/ILqLzKf4drF42Ih3+bG9VRUg+vR1pdMCmiQ6gEPxbMl8R5QyMI66WkOcglJNZTkSlkh/msizYXpK/pIpyyP9eS4f/fxQuORVQwEyvEqmmcD1Ig5dpopuJVAW7/eRNi0VuofWtcKbykAdB04t89/1O/w1cDnyilFU=')
 # Channel Secret
-handler = WebhookHandler('0eaf20febf8d0448aa93a91ba8b67ee5')
+handler = WebhookHandler('06c53dd89138805007c80455f57e7b68')
 
 
 # 監聽所有來自 /callback 的 Post Request
@@ -43,11 +46,12 @@ def callback():
     return 'OK'
 cities = ['基隆市','嘉義市','臺北市','嘉義縣','新北市','臺南市','桃園縣','高雄市','新竹市','屏東縣','新竹縣','臺東縣','苗栗縣','花蓮縣','臺中市','宜蘭縣','彰化縣','澎湖縣','南投縣','金門縣','雲林縣','連江縣']
 
+
 import requests
 def getWeather(city):
     tokena = 'CWB-0CB2B120-451C-4417-AE1E-8038A5BE654E'
-    url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-089?Authorization=' + tokena + '&format=JSON&locationName=' + str(city)
-    # https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-D0047-089?Authorization=CWB-0CB2B120-451C-4417-AE1E-8038A5BE654E&format=JSON&locationName=臺北市'
+    url = 'https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=' + tokena + '&format=JSON&locationName=' + str(city)
+    # https://opendata.cwb.gov.tw/api/v1/rest/datastore/F-C0032-001?Authorization=CWB-0CB2B120-451C-4417-AE1E-8038A5BE654E&format=JSON&locationName=臺北市'
     Data = requests.get(url)
     # return Data
     # Data = (json.loads(Data.text,encoding='utf-8'))['records']['location'][0]['weatherElement'] #bug
@@ -59,6 +63,7 @@ def getWeather(city):
         for i in Data:
             res[j].append(i['time'][j])
     return res
+
 
 # 處理訊息
 @handler.add(MessageEvent, message=TextMessage)
@@ -73,7 +78,7 @@ def handle_message(event):
     elif '註冊會員' in msg:
         message = Confirm_Template()
         line_bot_api.reply_message(event.reply_token, message)
-    elif '旋轉木馬' in msg:
+    elif '本日運勢' in msg:
         message = Carousel_Template()
         line_bot_api.reply_message(event.reply_token, message)
     elif '圖片畫廊' in msg:
@@ -120,7 +125,7 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, message)
     
     elif '誰是大美女' in msg:
-        message = TextSendMessage(text=f'是宋芊慧')
+        message = TextSendMessage(text=f'宋芊慧')
         line_bot_api.reply_message(event.reply_token, message)
 
     elif '提摩西' in msg:
@@ -145,7 +150,7 @@ def handle_message(event):
                     template = CarouselTemplate(
                         columns = [
                             CarouselColumn(
-                                thumbnail_image_url = 'https://i.imgur.com/Ex3Opfo.png',
+                                thumbnail_image_url = 'https://scdn.line-apps.com/n/channel_devcenter/img/fx/01_1_cafe.png',
                                 title = '{} ~ {}'.format(res[0][0]['startTime'][5:-3],res[0][0]['endTime'][5:-3]),
                                 text = '天氣狀況 {}\n溫度 {} ~ {} °C\n降雨機率 {}'.format(data[0]['parameter']['parameterName'],data[2]['parameter']['parameterName'],data[4]['parameter']['parameterName'],data[1]['parameter']['parameterName']),
                                 actions = [

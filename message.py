@@ -38,13 +38,13 @@ def imagemap_message():
                     x=1000, y=1000, width=1000, height=500
                 )
             ),
-#            URIImagemapAction(
-#                #亞尼克生乳捲
-#                link_uri="https://tw.shop.com/search/%E4%BA%9E%E5%B0%BC%E5%85%8B",
-#                area=ImagemapArea(
-#                    x=1000, y=1500, width=1000, height=500
-#                )
-#            ),
+            URIImagemapAction(
+                #亞尼克生乳捲
+                link_uri="https://tw.shop.com/search/%E4%BA%9E%E5%B0%BC%E5%85%8B",
+                area=ImagemapArea(
+                    x=1000, y=1500, width=1000, height=500
+                )
+            ),
             URIImagemapAction(
                 #提摩西·夏勒梅
                 link_uri="https://zh.wikipedia.org/zh-tw/%E6%8F%90%E6%91%A9%E8%A5%BF%C2%B7%E5%A4%8F%E5%8B%92%E6%A2%85",
@@ -71,7 +71,7 @@ def buttons_message():
                     data="input_birthday",
                     mode='date',
                     initial='1990-01-01',
-                    max='2019-03-10',
+                    max='2023-04-09',
                     min='1930-01-01'
                 ),
                 MessageTemplateAction(
@@ -109,17 +109,17 @@ def Confirm_Template():
     )
     return message
 
-#旋轉木馬按鈕訊息介面
+#本日運勢按鈕訊息介面
 
 def Carousel_Template():
     message = TemplateSendMessage(
-        alt_text='一則旋轉木馬按鈕訊息',
+        alt_text='一則本日運勢按鈕訊息',
         template=CarouselTemplate(
             columns=[
                 CarouselColumn(
                     thumbnail_image_url='https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Number_1_in_green_rounded_square.svg/200px-Number_1_in_green_rounded_square.svg.png',
-                    title='這是第一塊模板',
-                    text='一個模板可以有三個按鈕',
+                    title='星座運勢',
+                    text='事業 財富 愛情',
                     actions=[
                         PostbackTemplateAction(
                             label='回傳一個訊息',
@@ -127,37 +127,37 @@ def Carousel_Template():
                         ),
                         MessageTemplateAction(
                             label='用戶發送訊息',
-                            text='我知道這是1'
+                            text='我知道這是星座運勢'
                         ),
                         URITemplateAction(
-                            label='進入1的網頁',
-                            uri='https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Number_1_in_green_rounded_square.svg/200px-Number_1_in_green_rounded_square.svg.png'
+                            label='進入星座運勢的網頁',
+                            uri='https://astro.click108.com.tw/index.php'
                         )
                     ]
                 ),
                 CarouselColumn(
                     thumbnail_image_url='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRuo7n2_HNSFuT3T7Z9PUZmn1SDM6G6-iXfRC3FxdGTj7X1Wr0RzA',
-                    title='這是第二塊模板',
-                    text='副標題可以自己改',
+                    title='周公解夢',
+                    text='美夢 惡夢',
                     actions=[
                         PostbackTemplateAction(
                             label='回傳一個訊息',
-                            data='這是ID=2'
+                            data='這是ID=周公解夢'
                         ),
                         MessageTemplateAction(
                             label='用戶發送訊息',
-                            text='我知道這是2'
+                            text='我知道這是周公解夢'
                         ),
                         URITemplateAction(
-                            label='進入2的網頁',
-                            uri='https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Number_2_in_light_blue_rounded_square.svg/200px-Number_2_in_light_blue_rounded_square.svg.png'
+                            label='進入周公解夢的網頁',
+                            uri='https://www.golla.tw/'
                         )
                     ]
                 ),
                 CarouselColumn(
                     thumbnail_image_url='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Number_3_in_yellow_rounded_square.svg/200px-Number_3_in_yellow_rounded_square.svg.png',
-                    title='這是第三個模塊',
-                    text='最多可以放十個',
+                    title='心理測驗',
+                    text='好玩小遊戲',
                     actions=[
                         PostbackTemplateAction(
                             label='回傳一個訊息',
@@ -165,11 +165,11 @@ def Carousel_Template():
                         ),
                         MessageTemplateAction(
                             label='用戶發送訊息',
-                            text='我知道這是3'
+                            text='我知道這是心理測驗'
                         ),
                         URITemplateAction(
-                            label='uri2',
-                            uri='https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Number_3_in_yellow_rounded_square.svg/200px-Number_3_in_yellow_rounded_square.svg.png'
+                            label='進入心理測驗的網頁',
+                            uri='https://girlstyle.com/tw/tag/%E5%BF%83%E7%90%86%E6%B8%AC%E9%A9%97'
                         )
                     ]
                 )
@@ -178,10 +178,10 @@ def Carousel_Template():
     )
     return message
 
-#TemplateSendMessage - ImageCarouselTemplate(圖片旋轉木馬)
+#TemplateSendMessage - ImageCarouselTemplate(圖片本日運勢)
 def image_carousel_message1():
     message = TemplateSendMessage(
-        alt_text='圖片旋轉木馬',
+        alt_text='圖片本日運勢',
         template=ImageCarouselTemplate(
             columns=[
                 ImageCarouselColumn(
