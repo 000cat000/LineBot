@@ -1,10 +1,9 @@
 from linebot import LineBotApi, WebhookHandler
-from linebot.models import TextSendMessage, StickerSendMessage, ImageSendMessage, LocationSendMessage
-import requests, statistics, json, time
+from linebot.models import TextSendMessage
+import requests, json
 from cgi import test
 from flask import Flask, request, abort
-
-from linebot import (LineBotApi, WebhookHandler)
+from linebot import LineBotApi, WebhookHandler
 from linebot.exceptions import (InvalidSignatureError)
 from linebot.models import *
 
@@ -13,14 +12,25 @@ from linebot.models import *
 from message import *
 from new import *
 from Function import *
-#======這裡是呼叫的檔案內容=====
+
 
 #======python的函數庫==========
-import tempfile, os
-import datetime
-import time
-import json
-#======python的函數庫==========
+import os
+
+#本周运势格式
+str1 = '{"name": "獅子座", "datetime": "2022年10月31日-2022年11月06日", "color": "古銅色", "health": "95", "love": "80", "money": "84", "summary": "有些思考的小漩渦，可能讓你忽然的放空，生活中許多的細節讓你感觸良多，五味雜陳。", "work": "80", "resultcode": "200", "error_code": 0}'
+j = json.loads(str1)
+
+str2 = '{"name": "白羊座", "datetime": "2022年10月31日-2022年11月06日", "color": "粉紅色", "health": "65", "love": "90", "money": "80", "summary": "一些白羊座會面臨偏頭痛、頭暈的情況，有可能是勞累過度，也有可能是頸椎負擔太大，要注意多多休息。", "work": "95", "resultcode": "200", "error_code": 0}'
+j = json.loads(str2)
+
+str3 = '{"name": "天蠍座", "datetime": "2022年10月31日-2022年11月06日", "color": "青綠色", "health": "90", "love": "95", "money": "99", "summary": "本月的目標性和計劃性都很強，兩個階段的區別在於行動力。上旬和中旬，行動力分散，下旬，行動力足夠，但受水逆影響，意外多。", "work": "98", "resultcode": "200", "error_code": 0}'
+j = json.loads(str3)
+
+
+
+print(j)
+print(type(j))
 
 app = Flask(__name__)
 static_tmp_path = os.path.join(os.path.dirname(__file__), 'static', 'tmp')
